@@ -206,7 +206,7 @@ internal class NativeView(
                             mapObjectManager = mapObjectManager!!,
                             result = result
                         )
-                        result.success("OK")
+//                        result.success("OK")
                     }
                 } else {
                     controller.setPolyline(
@@ -214,7 +214,7 @@ internal class NativeView(
                         mapObjectManager = mapObjectManager!!,
                         result = result
                     )
-                    result.success("OK")
+//                    result.success("OK")
                 }
 
             }
