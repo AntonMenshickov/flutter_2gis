@@ -87,7 +87,7 @@ internal class NativeView(
         methodChannel.setMethodCallHandler(this)
         gisView = MapView(context, mapOptions)
         routeEditor = RouteEditor(sdkContext)
-        controller = GisMapController(gisView, sdkContext)
+        controller = GisMapController(gisView, sdkContext, routeEditor)
         gisView.getMapAsync { map ->
             val minMaxZoom = CameraZoomRestrictions(
                 minZoom = Zoom(value = 3.0f),
@@ -190,11 +190,11 @@ internal class NativeView(
             }
 
             "setRoute" -> {
-                setRoute(arguments = call.arguments, result = result)
+                controller.setRoute(arguments = call.arguments, result = result)
             }
 
             "removeRoute" -> {
-                removeRoute(result = result)
+                controller.removeRoute(result = result)
             }
 
             "setPolyline" -> {
@@ -206,7 +206,6 @@ internal class NativeView(
                             mapObjectManager = mapObjectManager!!,
                             result = result
                         )
-//                        result.success("OK")
                     }
                 } else {
                     controller.setPolyline(
@@ -214,7 +213,6 @@ internal class NativeView(
                         mapObjectManager = mapObjectManager!!,
                         result = result
                     )
-//                    result.success("OK")
                 }
 
             }
@@ -230,54 +228,6 @@ internal class NativeView(
                 }
 
             }
-        }
-    }
-
-    private fun setRoute(arguments: Any, result: MethodChannel.Result) {
-        arguments as Map<String, Any>
-        val routeEditorSource = RouteEditorSource(sdkContext, routeEditor)
-        val startPoint = RouteSearchPoint(
-            coordinates = GeoPoint(
-                latitude = arguments["startLatitude"] as Double,
-                longitude = arguments["startLongitude"] as Double
-            )
-        )
-        val finishPoint = RouteSearchPoint(
-            coordinates = GeoPoint(
-                latitude = arguments["finishLatitude"] as Double,
-                longitude = arguments["finishLongitude"] as Double
-            )
-        )
-        routeEditor.setRouteParams(
-            RouteEditorRouteParams(
-                startPoint = startPoint,
-                finishPoint = finishPoint,
-                routeSearchOptions = RouteSearchOptions(
-                    CarRouteSearchOptions(
-
-                    )
-                )
-            )
-        )
-        gisView.getMapAsync { map ->
-            for (s in map.sources) {
-                if (s is RouteEditorSource) {
-                    map.removeSource(s)
-                }
-            }
-            map.addSource(routeEditorSource)
-            result.success("OK")
-        }
-    }
-
-    private fun removeRoute(result: MethodChannel.Result) {
-        gisView.getMapAsync { map ->
-            for (s in map.sources) {
-                if (s is RouteEditorSource) {
-                    map.removeSource(s)
-                }
-            }
-            result.success("OK")
         }
     }
 

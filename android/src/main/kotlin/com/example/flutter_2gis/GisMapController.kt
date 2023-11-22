@@ -14,10 +14,11 @@ import ru.dgis.sdk.map.*
 import ru.dgis.sdk.routing.*
 import java.io.ByteArrayInputStream
 
-class GisMapController(gv: MapView, ctx: Context) {
+class GisMapController(gv: MapView, ctx: Context, re: RouteEditor) {
 
     private var gisView = gv
     private var sdkContext = ctx
+    private var routeEditor = re
     private var listIconObjects: List<SimpleMapObject>? = null
     private var polylineObject: SimpleMapObject? = null
 
@@ -133,6 +134,54 @@ class GisMapController(gv: MapView, ctx: Context) {
             mapObjectManager.removeObject(polylineObject!!)
         }
         result.success("OK")
+    }
+
+    fun setRoute(arguments: Any, result: MethodChannel.Result) {
+        arguments as Map<String, Any>
+        val routeEditorSource = RouteEditorSource(sdkContext, routeEditor)
+        val startPoint = RouteSearchPoint(
+            coordinates = GeoPoint(
+                latitude = arguments["startLatitude"] as Double,
+                longitude = arguments["startLongitude"] as Double
+            )
+        )
+        val finishPoint = RouteSearchPoint(
+            coordinates = GeoPoint(
+                latitude = arguments["finishLatitude"] as Double,
+                longitude = arguments["finishLongitude"] as Double
+            )
+        )
+        routeEditor.setRouteParams(
+            RouteEditorRouteParams(
+                startPoint = startPoint,
+                finishPoint = finishPoint,
+                routeSearchOptions = RouteSearchOptions(
+                    CarRouteSearchOptions(
+
+                    )
+                )
+            )
+        )
+        gisView.getMapAsync { map ->
+            for (s in map.sources) {
+                if (s is RouteEditorSource) {
+                    map.removeSource(s)
+                }
+            }
+            map.addSource(routeEditorSource)
+            result.success("OK")
+        }
+    }
+
+    fun removeRoute(result: MethodChannel.Result) {
+        gisView.getMapAsync { map ->
+            for (s in map.sources) {
+                if (s is RouteEditorSource) {
+                    map.removeSource(s)
+                }
+            }
+            result.success("OK")
+        }
     }
 }
 
