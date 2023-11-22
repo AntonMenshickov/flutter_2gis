@@ -19,13 +19,13 @@ import ru.dgis.sdk.coordinates.Bearing
 import ru.dgis.sdk.coordinates.GeoPoint
 import ru.dgis.sdk.coordinates.Latitude
 import ru.dgis.sdk.coordinates.Longitude
-import ru.dgis.sdk.map.BearingSource
 import ru.dgis.sdk.map.CameraPosition
 import ru.dgis.sdk.map.CameraZoomRestrictions
 import ru.dgis.sdk.map.MapObjectManager
 import ru.dgis.sdk.map.MapOptions
 import ru.dgis.sdk.map.MapView
 import ru.dgis.sdk.map.MyLocationController
+import ru.dgis.sdk.map.MyLocationDirectionBehaviour
 import ru.dgis.sdk.map.MyLocationMapObjectSource
 import ru.dgis.sdk.map.RouteEditorSource
 import ru.dgis.sdk.map.ScreenDistance
@@ -123,10 +123,7 @@ internal class NativeView(
             })
             val source = MyLocationMapObjectSource(
                 sdkContext,
-                MyLocationController(
-                    BearingSource.AUTO
-
-                )
+                MyLocationDirectionBehaviour.FOLLOW_SATELLITE_HEADING
             )
             map.addSource(source)
             val trafficSource = TrafficSource(sdkContext)

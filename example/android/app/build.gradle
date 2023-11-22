@@ -69,5 +69,5 @@ flutter {
 }
 
 dependencies {
-    implementation 'ru.dgis.sdk:sdk-full:latest.release'
+    implementation 'ru.dgis.sdk:sdk-full:7.2.1'
 }
