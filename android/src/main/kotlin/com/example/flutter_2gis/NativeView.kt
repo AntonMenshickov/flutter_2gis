@@ -63,7 +63,10 @@ internal class NativeView(
         return gisView
     }
 
-    override fun dispose() {}
+    override fun dispose() {
+        mapObjectManager?.close()
+        sdkContext.close()
+    }
 
     init {
         sdkContext = DGis.initialize(context)
