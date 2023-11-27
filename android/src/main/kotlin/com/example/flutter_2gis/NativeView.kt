@@ -51,7 +51,7 @@ internal class NativeView(
     messenger: BinaryMessenger
 ) :
     PlatformView, MethodChannel.MethodCallHandler {
-    private lateinit var sdkContext: ru.dgis.sdk.Context
+    private var sdkContext: ru.dgis.sdk.Context
     private var methodChannel: MethodChannel
     private var gisView: MapView
     private var mapObjectManager: MapObjectManager? = null
@@ -61,6 +61,9 @@ internal class NativeView(
 
     override fun getView(): View {
         return gisView
+    }
+
+    override fun dispose() {
     }
 
     init {
