@@ -24,24 +24,17 @@ import ru.dgis.sdk.map.CameraZoomRestrictions
 import ru.dgis.sdk.map.MapObjectManager
 import ru.dgis.sdk.map.MapOptions
 import ru.dgis.sdk.map.MapView
-import ru.dgis.sdk.map.MyLocationController
 import ru.dgis.sdk.map.MyLocationDirectionBehaviour
 import ru.dgis.sdk.map.MyLocationMapObjectSource
-import ru.dgis.sdk.map.RouteEditorSource
 import ru.dgis.sdk.map.ScreenDistance
 import ru.dgis.sdk.map.ScreenPoint
 import ru.dgis.sdk.map.Tilt
 import ru.dgis.sdk.map.TouchEventsObserver
 import ru.dgis.sdk.map.TrafficSource
 import ru.dgis.sdk.map.Zoom
-import ru.dgis.sdk.navigation.NavigationManager
 import ru.dgis.sdk.positioning.registerPlatformLocationSource
 import ru.dgis.sdk.positioning.registerPlatformMagneticSource
-import ru.dgis.sdk.routing.CarRouteSearchOptions
 import ru.dgis.sdk.routing.RouteEditor
-import ru.dgis.sdk.routing.RouteEditorRouteParams
-import ru.dgis.sdk.routing.RouteSearchOptions
-import ru.dgis.sdk.routing.RouteSearchPoint
 import ru.dgis.sdk.traffic.TrafficControl
 
 internal class NativeView(
@@ -136,10 +129,6 @@ internal class NativeView(
             view.gravity = Gravity.BOTTOM
             view.addView(trafficControl)
             this.gisView.addView(view);
-
-
-            val navigationManager = NavigationManager(sdkContext)
-            navigationManager.start()
         }
     }
 
